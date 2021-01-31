@@ -1,0 +1,26 @@
+service: notes-api # Création sur AWS en utilisant ce paramètre (Si il change et q'on le deploit, un nouveau projet sera créé dans AWS)
+
+# Create an optimized package for our functions
+package:
+  individually: true # Package function individually (1 package per lambda function, juste the needed code)
+
+plugins:
+  - serverless-bundle # Package our functions with Webpack, Serverless Framework (ES6 TypeScript)
+  - serverless-offline # Help for local development
+  - serverless-dotenv-plugin # Load .env as Lambda environment variables
+
+provider:
+  name: aws
+  runtime: nodejs12.x
+  stage: dev
+  region: us-east-1
+
+# Fonction Lambda, qui correspond à la fonction dans le handler.js
+# Elle est appelé avec l'url /hello en GET
+functions:
+  hello:
+    handler: handler.hello
+    events:
+      - http:
+          path: hello
+          method: get
